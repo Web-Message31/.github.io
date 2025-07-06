@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Web Message</title>
+  <link rel="icon" type="image/png" href="lg.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white dark:bg-gray-900">
+
+  <!-- Navbar -->
+  <nav class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 shadow-md">
+    <div class="max-w-screen-xl mx-auto px-4 py-3 flex items-center justify-between">
+
+      <!-- Logo -->
+      <a href="#" class="flex items-center space-x-2">
+        <img src="logo_2_.png" class="h-8" alt="Logo" />
+        <span class="text-xl font-bold text-gray-800 dark:text-white">Web Message</span>
+      </a>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="#" class="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-700 dark:hover:text-white transition-all duration-300">Home</a>
+        <a href="#" class="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-700 dark:hover:text-white transition-all duration-300">About</a>
+        <a href="#" class="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-700 dark:hover:text-white transition-all duration-300">Contact</a>
+      </div>
+
+      <!-- Right Side -->
+      <div class="flex items-center space-x-4">
+        <a href="signup.html" class="hidden md:inline-block bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-lg transition-all duration-300">Signup</a>
+        <a href="login.html" class="hidden md:inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg transition-all duration-300">Login</a>
+        <img id="navProfilePic" src="default.png" alt="User" class="hidden md:block w-10 h-10 rounded-full border-2 border-blue-500" />
+        <span id="navUsername" class="hidden md:inline-block text-white font-semibold ml-2">User</span>
+        <button id="menuBtn" class="md:hidden text-gray-700 dark:text-white focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden px-4 pb-4 space-y-3">
+      <div class="flex items-center space-x-3 border-b border-gray-300 dark:border-gray-700 pb-3">
+        <img id="mobileProfilePic" src="default.png" alt="User" class="w-10 h-10 rounded-full border-2 border-blue-500" />
+        <span id="mobileUsername" class="text-gray-800 dark:text-white font-semibold">User</span>
+      </div>
+      <a href="#" class="block px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-700 dark:hover:text-white transition-all duration-300">Home</a>
+      <a href="#" class="block px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-700 dark:hover:text-white transition-all duration-300">About</a>
+      <a href="#" class="block px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-700 dark:hover:text-white transition-all duration-300">Contact</a>
+      <a href="signup.html" class="block px-4 py-2 rounded-lg bg-green-600 text-white text-center hover:bg-green-700 transition-all duration-300">Signup</a>
+      <a href="login.html" class="block px-4 py-2 rounded-lg bg-blue-600 text-white text-center hover:bg-blue-700 transition-all duration-300">Login</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="pt-24 text-center max-w-xl mx-auto">
+    <h1 class="text-4xl font-bold text-gray-800 dark:text-white">Welcome!</h1>
+    <p class="text-gray-600 dark:text-gray-300 mt-2">This is a clean glassy navbar demo built with Tailwind CSS.</p>
+  </div>
+
+  <!-- Firebase & Auth Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCkOphHZvyarsB0Jy-ymejaWMcOa-sz3sc",
+      authDomain: "web-message-ef48f.firebaseapp.com",
+      projectId: "web-message-ef48f",
+      appId: "1:960005541721:web:8b75d642221c90cc720648"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const username = user.displayName || "User";
+        const photoURL = user.photoURL || "default.png";
+
+        document.getElementById("navUsername").textContent = username;
+        document.getElementById("navProfilePic").src = photoURL;
+        document.getElementById("mobileUsername").textContent = username;
+        document.getElementById("mobileProfilePic").src = photoURL;
+      } else {
+        console.log("No user logged in");
+      }
+    });
+  </script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  </script>
+
+</body>
+</html>
